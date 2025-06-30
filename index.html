@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Geri Sayım</title>
+  <style>
+    /* Tam sayfa flex ile ortalama */
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f0f0f0;
+    }
+    /* Sayaç stili */
+    #countdown {
+      font-family: 'Arial', sans-serif;
+      font-size: 5rem;       /* İstediğin büyüklüğe göre ayarla */
+      color: #333;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="countdown">Yükleniyor...</div>
+
+  <script>
+    // Hedef tarihi buraya gir (Örnek: 31 Aralık 2025, 23:59:59)
+    const hedef = new Date('2025-12-31T23:59:59').getTime();
+
+    const sayaçElement = document.getElementById('countdown');
+
+    const intervalId = setInterval(() => {
+      const şimdi = new Date().getTime();
+      const kalan = hedef - şimdi;
+
+      if (kalan <= 0) {
+        clearInterval(intervalId);
+        sayaçElement.innerHTML = 'SÜRE DOLDU!';
+        return;
+      }
+
+      // Gün, saat, dakika, saniye hesapla
+      const saniye = 1000;
+      const dakika = saniye * 60;
+      const saat   = dakika * 60;
+      const gün     = saat * 24;
+
+      const kalanGün  = Math.floor(kalan / gün);
+      const kalanSaat = Math.floor((kalan % gün) / saat);
+      const kalanDak  = Math.floor((kalan % saat) / dakika);
+      const kalanSan  = Math.floor((kalan % dakika) / saniye);
+
+      // İki haneli gösterim için sıfır ekle
+      const ikiHaneli = n => n.toString().padStart(2, '0');
+
+      sayaçElement.innerHTML = 
+        `${kalanGün} gün ` +
+        `${ikiHaneli(kalanSaat)}:` +
+        `${ikiHaneli(kalanDak)}:` +
+        `${ikiHaneli(kalanSan)}`;
+    }, 1000);
+  </script>
+</body>
+</html>
